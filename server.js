@@ -1,6 +1,10 @@
 var express = require("express");
 //var logger = require("morgan");
+var bodyParser = require("body-parser")
+var hbs = require("express-handlebars")
+
 var mongoose = require("mongoose");
+var path = require('path');
 
 // Our scraping tools
 // Axios is a promised-based http library, similar to jQuery's Ajax method
@@ -10,6 +14,9 @@ var cheerio = require("cheerio");
 
 // Require all models
 var db = require("./models");
+// Connect to the Mongo DB
+mongoose.connect("mongodb://localhost/MongoNews", { useNewUrlParser: true });
+
 
 var PORT = 3000;
 
@@ -18,40 +25,50 @@ var app = express();
 
 // Configure middleware
 
-// Use morgan logger for logging requests
-//app.use(logger("dev"));
-// Parse request body as JSON
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 // Make public a static folder
 app.use(express.static("public"));
 
-// Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/MongoNews", { useNewUrlParser: true });
+//handlebars use
+//app.set('views', './views')
+var exphbs = require("express-handlebars");
 
-// Routes
 
-// A GET route for scraping the echoJS website
-app.get("/scrape", function (req, res) {
+app.set('views', './views')
+app.engine(
+  "handlebars",
+  hbs({
+    defaultLayout: "main"
+  })
+);
+app.set("view engine", "handlebars");
+
+app.get('/', function (req, res) {
+  res.render('index');
+});
+
+/*app.get("/scrape", function (req, res) {
   // First, we grab the body of the html with axios
-  axios.get("https://www.wsj.com/").then(function (response) {
+  axios.get("https://www.nytimes.com/").then(function (response) {
     //console.log(response)
     // Then, we load that into cheerio and save it to $ for a shorthand selector
     var $ = cheerio.load(response.data);
 
     // Now, we grab every h2 within an article tag, and do the following:
-    $("div.wsj-card").each(function (i, element) {
+    $("article").each(function (i, element) {
       // Save an empty result object
       var result = []
 
       // Add the text and href of every link, and save them as properties of the result object
-      var title = $(element).children('h3.wsj-headline').text();
+      var title = $(element).find('h2').text().trim();
     //console.log("title" + title)
     // Save the article url
-    var articleURL = $(element).children().children("a.wsj-headline-link").attr("href");
+    var articleURL = $(element).find("a").attr("href");
     //console.log("url" +  articleURL)
     // Save the synopsis text
-    var synopsis = $(element).children('div.wsj-card-body').children('p.wsj-summary').children('span').text();
+    var synopsis = $(element).find("p").text().trim();
    // console.log("summary" + synopsis)
 
 
@@ -64,7 +81,7 @@ app.get("/scrape", function (req, res) {
         .catch(function(err) {
           // If an error occurred, log it
           console.log(err);
-        });*/
+        });
 
       result.push({
         title: title,
@@ -130,6 +147,23 @@ app.post("/articles/:id", function(req, res) {
       res.json(err);
     });
 });
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Start the server
 app.listen(PORT, function () {
