@@ -36,13 +36,13 @@ app.set("view engine", "handlebars");
 
 app.get('/', function (req, res) {
   db.Article.find({saved: false}, function(err, data){
-  res.render('index');
+  res.render('index',{ home: true, article : data });
   })
 })
 
-app.get('/', function (req, res) {
-  db.Article.find({saved: false}, function(err, data){
-  res.render('index');
+app.get('/save', function (req, res) {
+  db.Article.find({saved: true}, function(err, data){
+  res.render('save',{ home: false, article : data });
   })
 })
 
@@ -146,6 +146,19 @@ app.post("/articles/:id", function (req, res) {
     });
 });
 
+
+app.put("/articles/:id", function(req, res){
+  var saved = req.body.saved == 'true'
+  if(saved){
+    db.Article.updateOne({_id: req.body._id},{$set: {saved:true}}, function(err, result){
+    if (err) {
+      console.log(err)
+    } else {
+      return res.send(true)
+    }
+  });
+  }
+});
 
 // Start the server
 app.listen(PORT, function () {

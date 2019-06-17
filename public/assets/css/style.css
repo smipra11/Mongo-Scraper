@@ -1,3 +1,16 @@
 .jumbotron{
-  : url("../images/coffie.jpg")
+    width:100%
+}
+
+
+
+.jumbotron {
+ background-image : url("../images/coffie.jpg");
+ height:100%;
+
+ 
+    background-size: cover;
+  
+ 
+ 
 }

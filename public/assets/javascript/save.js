@@ -1,5 +1,3 @@
-
-
 $(document).ready(function () {
 
   var articlecontainr = $(".article-container")
@@ -7,8 +5,8 @@ $(document).ready(function () {
 
 
 
-  $.getJSON("/articles?saved=false").then(function (data) {
-     console.log(data)
+  $.getJSON("/articles?saved=true").then(function (data) {
+    console.log(data)
     if (data && data.length) {
       showArticle(data)
     } else {
@@ -28,10 +26,12 @@ $(document).ready(function () {
 
     // console.log(articlelink)
 
-    var articlebtn = $("<button class='btn btn-success articlesave'>Save Article</button>")
+    var articlebtn = $("<a class='btn btn-danger delete'>Delete From Saved</a>")
+    var articlebtn1 = $("<a class='btn btn-info notes'>Article Notes</a>")
 
     h3.append(articlelink)
     h3.append(articlebtn)
+    h3.append(articlebtn1)
     cardHeader.append(h3)
 
 
@@ -52,50 +52,33 @@ $(document).ready(function () {
 
   }
 
-  $(document).on("click", ".savearticle", function () {
+  $(document).on("click", ".articlesave", function () {
 
     event.preventDefault()
     console.log("article btn clicked")
     const savethisArticle = $(this).parents(".card").data()
 
-    //to delete card from page we will do below
-    $(this).parents(".card").remove()
-
-    savethisArticle.saved = true
-    console.log(savethisArticle)
+    //console.log(savethisArticle)
 
     $.ajax({
       method: "PUT",
       url: "/articles/" + savethisArticle,
       data: savethisArticle
     }).then(function (data) {
-      console.log(data)
+      //console.log(data)
 
-      if (data) {
-        location.reload()
-      }
     })
-  })
 
-  $(document).on("click", ".scrapbtn",function(){
-    $.get("/scrape").then(function (data) {
-
-      console.log(data)
     
-       showArticle(data)
-       window.location.href = "/";
-     
-   })
-  
-  })
+
+  });
+
+  $(document).on("click", ".dangerbtn", function () {
+    console.log("danger clicked")
+    $(this).parents(".card").remove();
+  });
 
 
-  $(document).on("click", ".cleararticle",function(){
-    articlecontainr.empty();
-
-        
-  })
 });
-
 
 
