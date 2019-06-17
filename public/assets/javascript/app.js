@@ -28,7 +28,7 @@ $(document).ready(function () {
 
     // console.log(articlelink)
 
-    var articlebtn = $("<button class='btn btn-success articlesave'>Save Article</button>")
+    var articlebtn = $("<button class='btn btn-warning articlesave'>Save Article</button>")
 
     h3.append(articlelink)
     h3.append(articlebtn)

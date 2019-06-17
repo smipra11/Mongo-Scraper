@@ -23,23 +23,52 @@
 }
 
 .navbar-nav{
-    background-color: bisque;
+    background-color: darkgrey;
     color:white;
     font-size: 20px;
     width:100%;
     margin-bottom: 0;
 }
 .card .card-header{
-    background-color: bisque;
+    background-color: darkgray;
     position: relative;
+    height:100px;
+    color:darkgray;
+    
+
+}
+.card .card-header ,.article-link{
+    color:black;
     
 
 }
 .card .card-header .btn{
     position: absolute;
     right: 20px;
+    background-color: coral;
     
 }
 .card{
     margin: 20px 0;
+    
+}
+.mongo  {
+    margin-right: 50px;
+    color:black;
+    
+    
+}
+.savelink{
+margin-right: 250px;
+
+}
+.homelink{
+    margin-right: 30px;
+    
+}
+
+.jumbotron .captain{
+    color: coral;
+    text-align: center;
+    top:30%;
 }
