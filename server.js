@@ -20,7 +20,10 @@ app.use(express.static("public"));
 // Require all models
 var db = require("./models");
 // Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/Mngoscrapper", { useNewUrlParser: true });
+
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/Mngoscrapper";
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
+//mongoose.connect("mongodb://localhost/Mngoscrapper", { useNewUrlParser: true });
 
 var PORT = 3000;
 
@@ -35,14 +38,14 @@ app.engine(
 app.set("view engine", "handlebars");
 
 app.get('/', function (req, res) {
-  db.Article.find({saved: false}, function(err, data){
-  res.render('index',{ home: true, article : data });
+  db.Article.find({ saved: false }, function (err, data) {
+    res.render('index', { home: true, article: data });
   })
 })
 
 app.get('/save', function (req, res) {
-  db.Article.find({saved: true}, function(err, data){
-  res.render('save',{ home: false, article : data });
+  db.Article.find({ saved: true }, function (err, data) {
+    res.render('save', { home: false, article: data });
   })
 })
 
@@ -60,37 +63,52 @@ app.get("/scrape", function (req, res) {
       var result = []
 
       // Add the text and href of every link, and save them as properties of the result object
-      var headline = $(element).find('h2').text().trim();
+      //headline = $(element).find('h2').text().trim();
       //console.log("title" + title)
       // Save the article url
-      var url = $(element).find("a").attr("href");
+      url=  'https://www.nytimes.com/' + $(element).find("a").attr("href");
+      
+      console.log(url)
       //console.log("url" +  articleURL)
       // Save the synopsis text
-      var summary = $(element).find("p").text().trim();
+      summary = $(element).find("p").text().trim();
       // console.log("summary" + synopsis)
 
       result.push({
         headline: headline,
         url: url,
         summary: summary
-      }
+      })
 
-      )
+
       console.log(result)
-      // Create a new Article using the `result` object built from scraping
-      db.Article.create(result)
-        .then(function (dbArticle) {
-          // View the added result in the console
-          console.log(dbArticle);
+      if (headline !== "" & summary !== "") {
+        db.Article.findOne({ headline: headline }, function (err, data) {
+          if (err) {
+            console.log(err)
+          }
+          else {
+            if (data === null) {
+              db.Article.create(result)
+                .then(function (dbArticle) {
+                  // View the added result in the console
+                  console.log(dbArticle);
+                })
+                .catch(function (err) {
+                  // If an error occurred, log it
+                  console.log(err);
+                });
+
+            }
+          }
         })
-        .catch(function (err) {
-          // If an error occurred, log it
-          console.log(err);
-        });
+      }
+      // Create a new Article using the `result` object built from scraping
+      
 
-
-    });
-
+    
+      })
+    
     // Send a message to the client
     res.send("Scrape Complete");
   });
@@ -147,16 +165,16 @@ app.post("/articles/:id", function (req, res) {
 });
 
 
-app.put("/articles/:id", function(req, res){
+app.put("/articles/:id", function (req, res) {
   var saved = req.body.saved == 'true'
-  if(saved){
-    db.Article.updateOne({_id: req.body._id},{$set: {saved:true}}, function(err, result){
-    if (err) {
-      console.log(err)
-    } else {
-      return res.send(true)
-    }
-  });
+  if (saved) {
+    db.Article.updateOne({ _id: req.body._id }, { $set: { saved: true } }, function (err, result) {
+      if (err) {
+        console.log(err)
+      } else {
+        return res.send(true)
+      }
+    });
   }
 });
 

@@ -26,7 +26,7 @@ $(document).ready(function () {
     articlelink.attr("href", article.url)
     articlelink.text(article.headline)
 
-    // console.log(articlelink)
+    console.log(articlelink)
 
     var articlebtn = $("<button class='btn btn-warning articlesave'>Save Article</button>")
 

@@ -70,5 +70,11 @@ margin-right: 250px;
 .jumbotron .captain{
     color: coral;
     text-align: center;
-    top:30%;
+    padding: 200px;
+    
+}
+
+.jumbotron h3{
+    font-size: 80px;
+    font-weight: 800;   
 }
