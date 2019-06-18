@@ -8,7 +8,7 @@ var axios = require("axios");
 var cheerio = require("cheerio");
 var app = express();
 var db = require("./models");
-var PORT = 3000;
+
 
 app.use(logger("dev"));
 app.use(express.urlencoded({ extended: true }));
@@ -25,7 +25,7 @@ var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/Mngoscrapper";
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 //mongoose.connect("mongodb://localhost/Mngoscrapper", { useNewUrlParser: true });
 
-var PORT = 3000;
+ var PORT = process.env.PORT || 3000;
 
 
 app.set('views', './views')
