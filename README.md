@@ -23,3 +23,6 @@ Save the Article
 
 ![save](https://user-images.githubusercontent.com/45401868/61318458-2019a380-a7d3-11e9-817e-4fed12881047.png)
 
+clear the article
+
+![clear](https://user-images.githubusercontent.com/45401868/61318569-5eaf5e00-a7d3-11e9-930d-79525642272a.png)
