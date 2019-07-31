@@ -7,7 +7,7 @@ var mongoose = require("mongoose");
 var axios = require("axios");
 var cheerio = require("cheerio");
 var app = express();
-var db = require("./models");
+//var db = require("./models")
 
 
 app.use(logger("dev"));
